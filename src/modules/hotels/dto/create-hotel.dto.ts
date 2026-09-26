@@ -41,7 +41,13 @@ export const createHotelSchema = z
 
     const urls = new Set<string>();
     hotel.images.forEach((image, index) => {
-      const normalizedUrl = new URL(image.url).toString();
+      let normalizedUrl: string;
+
+      try {
+        normalizedUrl = new URL(image.url).toString();
+      } catch {
+        return;
+      }
 
       if (urls.has(normalizedUrl)) {
         context.addIssue({

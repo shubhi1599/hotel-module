@@ -39,6 +39,16 @@ match against `normalized_name`; images are deliberately not queried or returned
 `GET /hotels/:id` returns a hotel and its images in ascending `sortOrder`. An
 unknown ID returns `404`; an invalid ID returns a `400` validation error.
 
+### Tests
+
+With Docker services running and migrations applied, execute the integration suite:
+
+```bash
+npm test
+```
+
+Tests use PostgreSQL and delete only the hotel records that they create.
+
 ### Database migrations
 
 Generate a SQL migration from the Drizzle schema, then apply it after the
