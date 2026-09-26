@@ -61,6 +61,16 @@ afterAll(async () => {
   await closeDatabase();
 });
 
+describe('API documentation', () => {
+  it('exposes the OpenAPI specification', async () => {
+    const response = await request(app).get('/openapi.json');
+
+    expect(response.status).toBe(200);
+    expect(response.body.openapi).toBe('3.0.3');
+    expect(response.body.paths['/hotels/autocomplete']).toHaveProperty('get');
+  });
+});
+
 describe('POST /hotels', () => {
   it('creates a valid hotel and makes the first image primary by default', async () => {
     const response = await createHotel(

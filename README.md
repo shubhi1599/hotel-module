@@ -20,6 +20,12 @@ docker compose up --build
 
 The initial foundation exposes `GET /health` at `http://localhost:3000/health`.
 
+### API documentation
+
+With the backend running, open interactive Swagger UI at
+`http://localhost:3000/api-docs`. The machine-readable OpenAPI document is served
+from `http://localhost:3000/openapi.json`.
+
 ### Create hotel
 
 `POST /hotels` creates a hotel and all supplied images in one database transaction.
