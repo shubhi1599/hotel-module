@@ -1,5 +1,6 @@
 import type { CreateHotelDto } from '../dto/create-hotel.dto.js';
 import type { AutocompleteHotelsQuery } from '../dto/autocomplete-hotels.dto.js';
+import { AppError } from '../../../common/errors/app-error.js';
 import { HotelRepository } from '../repositories/hotel.repository.js';
 
 const hotelRepository = new HotelRepository();
@@ -53,5 +54,34 @@ export class HotelService {
 
   async autocomplete(input: AutocompleteHotelsQuery) {
     return hotelRepository.findActiveByNamePrefix(normalizeName(input.q));
+  }
+
+  async getHotelById(id: number) {
+    const hotel = await hotelRepository.findById(id);
+
+    if (!hotel) {
+      throw new AppError('Hotel not found.', 404);
+    }
+
+    const images = await hotelRepository.findImagesByHotelId(hotel.id);
+
+    return {
+      id: hotel.id,
+      name: hotel.name,
+      description: hotel.description,
+      address: hotel.address,
+      city: hotel.city,
+      countryCode: hotel.countryCode,
+      latitude: hotel.latitude,
+      longitude: hotel.longitude,
+      starRating: hotel.starRating,
+      isActive: hotel.isActive,
+      images: images.map((image) => ({
+        id: image.id,
+        url: image.url,
+        isPrimary: image.isPrimary,
+        sortOrder: image.sortOrder,
+      })),
+    };
   }
 }

@@ -34,6 +34,11 @@ changed.
 at most ten active hotels. The search is case-insensitive and uses a literal prefix
 match against `normalized_name`; images are deliberately not queried or returned.
 
+### Hotel details
+
+`GET /hotels/:id` returns a hotel and its images in ascending `sortOrder`. An
+unknown ID returns `404`; an invalid ID returns a `400` validation error.
+
 ### Database migrations
 
 Generate a SQL migration from the Drizzle schema, then apply it after the

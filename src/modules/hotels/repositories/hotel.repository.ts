@@ -52,6 +52,12 @@ export class HotelRepository {
       .orderBy(asc(hotelImages.sortOrder));
   }
 
+  async findById(id: number) {
+    const [hotel] = await db.select().from(hotels).where(eq(hotels.id, id)).limit(1);
+
+    return hotel;
+  }
+
   async findActiveByNamePrefix(normalizedPrefix: string) {
     const escapedPrefix = normalizedPrefix.replace(/[\\%_]/g, '\\$&');
 
