@@ -1,7 +1,8 @@
 import countries from 'i18n-iso-countries';
 import { z } from 'zod';
 
-const countryCodes = new Set(Object.values(countries.getAlpha2Codes()));
+// getAlpha2Codes() maps ISO alpha-2 codes to their alpha-3 equivalents.
+const countryCodes = new Set(Object.keys(countries.getAlpha2Codes()));
 
 const imageSchema = z
   .object({
