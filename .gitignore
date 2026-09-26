@@ -1,0 +1,15 @@
+# Local environment and credentials
+.env
+.env.*
+**/.env
+**/.env.*
+git-token.txt
+
+# Dependencies and generated output
+node_modules/
+dist/
+coverage/
+.DS_Store
+
+# Docker local data
+.docker-data/
