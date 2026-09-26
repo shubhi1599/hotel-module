@@ -5,6 +5,7 @@ import request from 'supertest';
 import { afterAll, afterEach, describe, expect, it } from 'vitest';
 
 import { createApp } from '../../../app.js';
+import { closeRedis } from '../../../common/cache/redis.js';
 import { closeDatabase, db } from '../../../database/client.js';
 import { hotels } from '../../../database/schema.js';
 
@@ -58,6 +59,7 @@ afterEach(async () => {
 });
 
 afterAll(async () => {
+  await closeRedis();
   await closeDatabase();
 });
 

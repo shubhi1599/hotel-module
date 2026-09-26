@@ -21,6 +21,12 @@ export interface NewHotelImage {
   sortOrder: number;
 }
 
+export interface AutocompleteHotel {
+  id: number;
+  name: string;
+  city: string;
+}
+
 export class HotelRepository {
   async create(hotel: NewHotel, images: readonly NewHotelImage[]) {
     return db.transaction(async (transaction) => {
@@ -58,7 +64,7 @@ export class HotelRepository {
     return hotel;
   }
 
-  async findActiveByNamePrefix(normalizedPrefix: string) {
+  async findActiveByNamePrefix(normalizedPrefix: string): Promise<AutocompleteHotel[]> {
     const escapedPrefix = normalizedPrefix.replace(/[\\%_]/g, '\\$&');
 
     return db

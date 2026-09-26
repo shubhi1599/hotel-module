@@ -55,6 +55,13 @@ npm test
 
 Tests use PostgreSQL and delete only the hotel records that they create.
 
+### Redis autocomplete cache
+
+Autocomplete results are cached in Redis for five minutes. A hotel creation bumps a
+cache-version key, so subsequent autocomplete requests immediately use a fresh key
+without scanning or deleting every existing cache entry. Redis failures never fail
+the API: autocomplete safely falls back to PostgreSQL.
+
 ### Database migrations
 
 Generate a SQL migration from the Drizzle schema, then apply it after the
