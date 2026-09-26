@@ -111,6 +111,20 @@ PostgreSQL, Elasticsearch/OpenSearch can serve autocomplete from an asynchronous
 maintained search index, with PostgreSQL remaining authoritative. Neither trigram
 search nor an external search cluster is required by the current implementation.
 
+## Optional enhancements
+
+These production enhancements are not implemented in this assignment:
+
+- **Image CDN:** In production, hotel image URLs could use a CDN for edge caching,
+  faster delivery, and image transformations. An upload or image-processing pipeline
+  would be needed to manage assets; this API currently stores and returns URLs only.
+- **Rate limiting:** A rate limit could protect autocomplete from excessive traffic.
+  In a multi-instance deployment, use a shared store such as Redis so limits apply
+  consistently across API instances. No rate limiter is configured currently.
+- **Soft delete:** A `deletedAt` marker could support recoverable deletion and be
+  excluded from normal hotel queries. `isActive` currently controls autocomplete
+  visibility; it does not represent deletion, and no delete endpoint is provided.
+
 ## Tests
 
 With the database migrated and required services available, run:
