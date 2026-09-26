@@ -94,7 +94,12 @@ describe('POST /hotels', () => {
 
   it.each([
     ['a missing name', { name: undefined }],
+    ['a missing address', { address: undefined }],
+    ['a missing city', { city: undefined }],
+    ['a missing country code', { countryCode: undefined }],
+    ['an invalid country code', { countryCode: 'ZZ' }],
     ['invalid latitude', { latitude: 91 }],
+    ['invalid longitude', { longitude: -181 }],
     ['invalid star rating', { starRating: 6 }],
     ['an invalid image URL', { images: [{ url: 'not-a-url' }] }],
     [
@@ -132,8 +137,8 @@ describe('GET /hotels/autocomplete', () => {
 
   it('performs case-insensitive prefix matching and returns no images', async () => {
     const prefix = `case${runId}`;
-    const response = await createHotel(buildHotel({ name: `${prefix} Hotel` }));
-    const hotelId = response.body.data.id;
+    const matchingHotel = await createHotel(buildHotel({ name: `${prefix} Hotel` }));
+    const nonMatchingHotel = await createHotel(buildHotel({ name: `Hotel ${prefix}` }));
 
     const autocompleteResponse = await request(app).get(
       `/hotels/autocomplete?q=${prefix.toUpperCase()}`,
@@ -141,10 +146,13 @@ describe('GET /hotels/autocomplete', () => {
 
     expect(autocompleteResponse.status).toBe(200);
     expect(autocompleteResponse.body).toContainEqual({
-      id: hotelId,
+      id: matchingHotel.body.data.id,
       name: `${prefix} Hotel`,
       city: 'Delhi',
     });
+    expect(autocompleteResponse.body).not.toContainEqual(
+      expect.objectContaining({ id: nonMatchingHotel.body.data.id }),
+    );
     expect(autocompleteResponse.body[0]).not.toHaveProperty('images');
   });
 
