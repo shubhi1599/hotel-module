@@ -20,6 +20,14 @@ docker compose up --build
 
 The initial foundation exposes `GET /health` at `http://localhost:3000/health`.
 
+### Create hotel
+
+`POST /hotels` creates a hotel and all supplied images in one database transaction.
+Invalid request data returns `400`; image URLs must be valid and unique per hotel,
+and at most one may be primary. If images are supplied without a primary image, the
+first image becomes primary. Invalid image data is rejected rather than silently
+changed.
+
 ### Database migrations
 
 Generate a SQL migration from the Drizzle schema, then apply it after the
