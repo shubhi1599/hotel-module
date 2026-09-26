@@ -28,6 +28,12 @@ and at most one may be primary. If images are supplied without a primary image, 
 first image becomes primary. Invalid image data is rejected rather than silently
 changed.
 
+### Hotel autocomplete
+
+`GET /hotels/autocomplete?q=gra` requires a minimum two-character query and returns
+at most ten active hotels. The search is case-insensitive and uses a literal prefix
+match against `normalized_name`; images are deliberately not queried or returned.
+
 ### Database migrations
 
 Generate a SQL migration from the Drizzle schema, then apply it after the

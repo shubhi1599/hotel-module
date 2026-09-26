@@ -1,4 +1,5 @@
 import type { CreateHotelDto } from '../dto/create-hotel.dto.js';
+import type { AutocompleteHotelsQuery } from '../dto/autocomplete-hotels.dto.js';
 import { HotelRepository } from '../repositories/hotel.repository.js';
 
 const hotelRepository = new HotelRepository();
@@ -48,5 +49,9 @@ export class HotelService {
         sortOrder: image.sortOrder,
       })),
     };
+  }
+
+  async autocomplete(input: AutocompleteHotelsQuery) {
+    return hotelRepository.findActiveByNamePrefix(normalizeName(input.q));
   }
 }

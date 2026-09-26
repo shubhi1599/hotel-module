@@ -1,4 +1,4 @@
-import { asc, eq } from 'drizzle-orm';
+import { and, asc, eq, like } from 'drizzle-orm';
 
 import { db } from '../../../database/client.js';
 import { hotelImages, hotels } from '../../../database/schema.js';
@@ -50,5 +50,25 @@ export class HotelRepository {
       .from(hotelImages)
       .where(eq(hotelImages.hotelId, hotelId))
       .orderBy(asc(hotelImages.sortOrder));
+  }
+
+  async findActiveByNamePrefix(normalizedPrefix: string) {
+    const escapedPrefix = normalizedPrefix.replace(/[\\%_]/g, '\\$&');
+
+    return db
+      .select({
+        id: hotels.id,
+        name: hotels.name,
+        city: hotels.city,
+      })
+      .from(hotels)
+      .where(
+        and(
+          eq(hotels.isActive, true),
+          like(hotels.normalizedName, `${escapedPrefix}%`),
+        ),
+      )
+      .orderBy(asc(hotels.normalizedName), asc(hotels.id))
+      .limit(10);
   }
 }
