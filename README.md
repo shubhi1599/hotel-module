@@ -20,5 +20,17 @@ docker compose up --build
 
 The initial foundation exposes `GET /health` at `http://localhost:3000/health`.
 
+### Database migrations
+
+After the containers are running, initialize or upgrade the database schema:
+
+```bash
+docker compose exec backend npm run db:migrate
+```
+
+Migrations are versioned in `src/database/migrations`. The first migration creates
+the `hotels` and `hotel_images` tables, their foreign key, database constraints,
+and indexes for hotel-image retrieval and active-hotel prefix search.
+
 Stop the services with `docker compose down`. Add `-v` only when you deliberately
 want to delete the local PostgreSQL and Redis data volumes.
